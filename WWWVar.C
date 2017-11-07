@@ -205,7 +205,9 @@ WWW::WWW(float pt1, float pt2, float eta1, float eta2, float phi1, float phi2, f
    _jetOk = 1;
   }
  }
- 
+ else {
+   _jetOk = 0;
+ } 
  _isTkMET = false;
 }
 
@@ -228,7 +230,7 @@ void WWW::checkIfOk() {
     if (_leptonspt.at(ilep) > 0.) numLep ++;
    }
    
-   //---- if 2 leptons and met is set
+   //---- if 3 leptons and met is set
    if (numLep >=3 && MET.E() > 0) {
     _isOk = true;
     _lepOk = numLep;
@@ -356,12 +358,12 @@ void WWW::setNotZLepton() {
 
   float Zmass = 91.1876;
 
-  float L1Charge = _leptonsflavour.at(0);
-  float L2Charge = _leptonsflavour.at(1);
-  float L3Charge = _leptonsflavour.at(2);
-  float L1flavour = _leptonscharge.at(0);
-  float L2flavour = _leptonscharge.at(1);
-  float L3flavour = _leptonscharge.at(2);
+  float L1Charge = _leptonscharge.at(0);
+  float L2Charge = _leptonscharge.at(1);
+  float L3Charge = _leptonscharge.at(2);
+  float L1flavour = _leptonsflavour.at(0);
+  float L2flavour = _leptonsflavour.at(1);
+  float L3flavour = _leptonsflavour.at(2);
 
   // cout << endl;
   // cout << "Charges " << L1Charge << " " << L2Charge << " " << L3Charge << endl;
@@ -430,12 +432,12 @@ void WWW::setLeptons(std::vector<float> invectorpt, std::vector<float> invectore
 float WWW::flagOSSF() {
 if (_isOk) {
 float flag_OSSF = 0.;
- float L1Charge = _leptonsflavour.at(0);
- float L2Charge = _leptonsflavour.at(1);
- float L3Charge = _leptonsflavour.at(2);
- float L1flavour = _leptonscharge.at(0);
- float L2flavour = _leptonscharge.at(1);
- float L3flavour = _leptonscharge.at(2);
+ float L1Charge = _leptonscharge.at(0);
+ float L2Charge = _leptonscharge.at(1);
+ float L3Charge = _leptonscharge.at(2);
+ float L1flavour = _leptonsflavour.at(0);
+ float L2flavour = _leptonsflavour.at(1);
+ float L3flavour = _leptonsflavour.at(2);
 
 //1e2mu case
 if(((fabs(L1flavour) ==11 && fabs(L2flavour) == 13 && fabs(L3flavour) == 13) && (L2flavour * L3flavour < 0)) || ((fabs(L1flavour) == 13 && fabs(L2flavour) == 11 && fabs(L3flavour) == 13) && (L1flavour * L3flavour < 0)) || ((fabs(L1flavour) == 13 && fabs(L2flavour) == 13 && fabs(L3flavour) == 11) && (L1flavour * L2flavour < 0))) {
@@ -446,11 +448,11 @@ if(((fabs(L1flavour) ==11 && fabs(L2flavour) == 11 && fabs(L3flavour) == 13) && 
 flag_OSSF = 1.;
 }
 //3mu case
-if(fabs(L1flavour) ==13 && fabs(L2flavour) == 13 && fabs(L3flavour) == 13 ) {
+ if(fabs(L1flavour) ==13 && fabs(L2flavour) == 13 && fabs(L3flavour) == 13 && fabs(L1flavour+L2flavour+L3flavour) == 13) {
 flag_OSSF = 1.;
 }
 //3e case
-if(fabs(L1flavour) ==11 && fabs(L2flavour) == 11 && fabs(L3flavour) == 11) {
+ if(fabs(L1flavour) ==11 && fabs(L2flavour) == 11 && fabs(L3flavour) == 11 && fabs(L1flavour+L2flavour+L3flavour) == 11) {
 flag_OSSF = 1.;
 }
 return flag_OSSF;
@@ -463,9 +465,9 @@ return -9999.;
 float WWW::drllmin3l(){
   //---- https://root.cern.ch/doc/master/TLorentzVector_8h_source.html#l00469
   if (_isOk) {
-    float L1Charge = _leptonsflavour.at(0);
-    float L2Charge = _leptonsflavour.at(1);
-    float L3Charge = _leptonsflavour.at(2);
+    float L1Charge = _leptonscharge.at(0);
+    float L2Charge = _leptonscharge.at(1);
+    float L3Charge = _leptonscharge.at(2);
     float deltaRN1 = 0.;
     float deltaRN2 = 0.;
     float deltaRN3 = 0.;
@@ -505,9 +507,9 @@ float WWW::drllmin3l(){
 float WWW::mllmin3l(){
 
   if (_isOk) {
-    float L1Charge = _leptonsflavour.at(0);
-    float L2Charge = _leptonsflavour.at(1);
-    float L3Charge = _leptonsflavour.at(2);
+    float L1Charge = _leptonscharge.at(0);
+    float L2Charge = _leptonscharge.at(1);
+    float L3Charge = _leptonscharge.at(2);
 
     double dlep1 = 0.;
     double dlep2 = 0.;
@@ -574,12 +576,12 @@ float WWW::zveto_3l(){
 
   if (_isOk) {
 
-    float L1Charge = _leptonsflavour.at(0);
-    float L2Charge = _leptonsflavour.at(1);
-    float L3Charge = _leptonsflavour.at(2);
-    float L1flavour = _leptonscharge.at(0);
-    float L2flavour = _leptonscharge.at(1);
-    float L3flavour = _leptonscharge.at(2);
+    float L1Charge = _leptonscharge.at(0);
+    float L2Charge = _leptonscharge.at(1);
+    float L3Charge = _leptonscharge.at(2);
+    float L1flavour = _leptonsflavour.at(0);
+    float L2flavour = _leptonsflavour.at(1);
+    float L3flavour = _leptonsflavour.at(2);
 
     double dlep1 = 0.;
     double dlep2 = 0.;
@@ -641,9 +643,9 @@ float WWW::chlll(){
   //---- check L3
   //----      pt3>2 GeV
   if (_leptonspt.size()>2 && _leptonspt.at(2) > 2) {
-   float L1Charge = _leptonsflavour.at(0);
-   float L2Charge = _leptonsflavour.at(1);
-   float L3Charge = _leptonsflavour.at(2);
+   float L1Charge = _leptonscharge.at(0);
+   float L2Charge = _leptonscharge.at(1);
+   float L3Charge = _leptonscharge.at(2);
 
   return L1Charge+L2Charge+L3Charge;
   }
